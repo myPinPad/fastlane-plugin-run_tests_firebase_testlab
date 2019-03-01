@@ -14,6 +14,10 @@ module Fastlane
 
         validate_params(params)
 
+        unless params[:console_output_file].nil?
+          @test_console_output_file = params[:console_output_file]
+        end
+
         if params[:gcloud_service_key_file].nil?
           UI.message("Save Google Cloud credentials.")
           File.open(@client_secret_file, 'w') do |file|
@@ -161,6 +165,12 @@ module Fastlane
                                        is_string: true,
                                        optional: true,
                                        default_value: "firebase"),
+          FastlaneCore::ConfigItem.new(key: :console_output_file,
+                                       env_name: "CONSOLE_OUTPUT_FILE",
+                                       description: "The file to save the output of the firebase console. Default: instrumentation_output.txt",
+                                       is_string: true,
+                                       optional: true,
+                                       default_value: "instrumentation_output.txt"),
           FastlaneCore::ConfigItem.new(key: :bucket_url,
                                        env_name: "BUCKET_URL",
                                        description: "The bucket url where the test results were stored. Default: Parsed automatically from tests output",
